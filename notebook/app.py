@@ -33,7 +33,7 @@ st.markdown("""
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0, 0.55);
+    background: rgba(0,0,0, 0.75);
     z-index: 0;
     pointer-events: none;
 }
@@ -218,7 +218,7 @@ month_list = sorted(df["Month"].unique())
 city_mapping = {city: idx for idx, city in enumerate(city_list)}
 company_mapping = {company: idx for idx, company in enumerate(company_list)}
 
-st.markdown("<div style='text-align:center;font-size:20px,color:e6d0ad'>◉ Electricity Bill Prediction System ◉</div>", unsafe_allow_html=True)
+st.markdown("<div style='text-align:center;font-size:20px,color:#f1efd8'>◉ Electricity Bill Prediction System ◉</div>", unsafe_allow_html=True)
 st.markdown("<div class='title'> What Will Be My Next Electricity Bill?</div>", unsafe_allow_html=True)
 st.markdown("<div class='subtitle'>Predict your upcoming electricity bill using Machine Learning</div>", unsafe_allow_html=True)
 st.divider()
