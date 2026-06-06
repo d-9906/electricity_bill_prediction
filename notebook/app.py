@@ -33,7 +33,7 @@ st.markdown("""
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0, 0.75);
+    background: rgba(0,0,0, 0.55);
     z-index: 0;
     pointer-events: none;
 }
@@ -75,7 +75,7 @@ h1, h2, h3, h4, h5, h6, p, label, span, div {
     text-align: center;
     font-size: 20px;
     margin-bottom: 25px;
-    color: #e6d0ad !important;
+    color: #f1efd8 !important;
 }
 
 
