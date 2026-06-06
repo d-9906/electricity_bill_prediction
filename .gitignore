@@ -216,3 +216,13 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+.ipynb_checkpoints/
+*.csv
+*.pkl
+*.h5
+
+
+echo ".ipynb_checkpoints/" >> .gitignore
+echo "*.csv" >> .gitignore
+echo "*.pkl" >> .gitignore
+echo "*.h5" >> .gitignore
