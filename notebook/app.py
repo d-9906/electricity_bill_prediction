@@ -11,10 +11,37 @@ st.set_page_config(
 
 st.markdown("""
 <style>
+        
+
+
             
-[data-testid="stAppViewContainer"] {
-    background: linear-gradient(135deg, #f8fbff 0%, #e7f0ff 100%) !important;
-    color: #102a43 !important;
+
+/* MAIN BACKGROUND IMAGE */
+.stApp {
+    background-image: url("https://thumbs.dreamstime.com/z/home-appliances-background-home-appliances-background-vector-seamless-pattern-home-kitchen-machines-graphic-design-165534348.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* DARK OVERLAY (makes text readable) */
+.stApp::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0, 0.75);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* BRING CONTENT ABOVE OVERLAY */
+.main, .block-container {
+    position: relative;
+    z-index: 1;
 }
 
 
@@ -24,7 +51,9 @@ st.markdown("""
     background: transparent !important;
 }
 
-            
+   body, .stApp {
+    color: #e5e7eb !important;
+}         
 .main, .block-container {
     background: transparent !important;
 }
@@ -38,7 +67,7 @@ h1, h2, h3, h4, h5, h6, p, label, span, div {
     font-size: 50px;
     font-weight: 800;
     margin-bottom: 10px;
-    color: #27187d !important;
+    color:#e6d0ad !important;
 }
 
 
@@ -46,19 +75,19 @@ h1, h2, h3, h4, h5, h6, p, label, span, div {
     text-align: center;
     font-size: 20px;
     margin-bottom: 25px;
-    color: #334155 !important;
+    color: #e6d0ad !important;
 }
 
 
 
 .bill-card {
-    background: rgba(255,255,255,0.90) !important;
+    background: rgba(17, 24, 39, 0.75);
     padding: 30px;
     border-radius: 20px;
     box-shadow: 0px 0px 18px rgba(0,0,0,0.10);
     border-left: 10px solid #38BDF8;
     backdrop-filter: blur(8px);
-    color: #102a43 !important;
+    color: #f1f5f9 !important;
 }
 
 
@@ -68,12 +97,111 @@ h1, h2, h3, h4, h5, h6, p, label, span, div {
     padding: 10px;
     color: inherit !important;
 }
+input, textarea {
+    color: #ffffff !important;
+    background: rgba(0,0,0,0.55) !important;
+    border: 1px solid rgba(255,255,255,0.2) !important;
+}
+div[data-baseweb="select"] * {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+}
 
+/* Selected value (main fix) */
+div[data-baseweb="select"] span {
+    color: #ffffff !important;
+}
+
+/* Input container */
+div[data-baseweb="select"] > div {
+    background: rgba(0,0,0,0.55) !important;
+    border: 1px solid rgba(255,255,255,0.25) !important;
+    border-radius: 10px !important;
+}
+
+/* Arrow icon fix */
+div[data-baseweb="select"] svg {
+    fill: #ffffff !important;
+}
 .decor-row {
     text-align: center;
     font-size: 34px;
     letter-spacing: 10px;
     margin: 10px 0 18px 0;
+}
+            
+           
+/* =========================
+   BUTTON STYLING
+========================= */
+.stButton > button {
+    background: linear-gradient(135deg, #38bdf8, #6366f1) !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px 20px !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+    transition: 0.3s ease !important;
+}
+
+.stButton > button:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 15px rgba(56,189,248,0.5);
+}
+
+/* =========================
+   INFO CARDS (b1, b2, b3 + st.info)
+========================= */
+div[data-testid="stAlert"] {
+    background: rgba(17, 24, 39, 0.75) !important;
+    color: #e5e7eb !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    backdrop-filter: blur(10px);
+}
+
+/* =========================
+   ABOUT MODEL SECTION CARD
+========================= */
+.stInfo {
+    background: rgba(17, 24, 39, 0.75) !important;
+    color: #e5e7eb !important;
+}
+
+/* =========================
+   HEADERS INSIDE INFO BOXES
+========================= */
+div[data-testid="stAlert"] p {
+    color: #e5e7eb !important;
+}
+
+/* =========================
+   RESULT BILL CARD (your custom card)
+========================= */
+.bill-card {
+    background: rgba(17, 24, 39, 0.85) !important;
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #f1f5f9 !important;
+}
+
+/* =========================
+   GENERAL TEXT FIX
+========================= */
+h1, h2, h3, p, label {
+    color: #f1f5f9 !important;
+}
+            
+            div[data-testid="stSuccess"] {
+    background: rgba(0,0,0,0.65) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(56,189,248,0.4) !important;
+}
+            
+            div[data-testid="stSuccess"] * {
+    color: #ffffff !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -90,7 +218,7 @@ month_list = sorted(df["Month"].unique())
 city_mapping = {city: idx for idx, city in enumerate(city_list)}
 company_mapping = {company: idx for idx, company in enumerate(company_list)}
 
-st.markdown("<div style='text-align:center;font-size:60px'>💡 ⚡ 🌀 🔌 🏠</div>", unsafe_allow_html=True)
+st.markdown("<div style='text-align:center;font-size:20px,color:e6d0ad'>◉ Electricity Bill Prediction System ◉</div>", unsafe_allow_html=True)
 st.markdown("<div class='title'> What Will Be My Next Electricity Bill?</div>", unsafe_allow_html=True)
 st.markdown("<div class='subtitle'>Predict your upcoming electricity bill using Machine Learning</div>", unsafe_allow_html=True)
 st.divider()
