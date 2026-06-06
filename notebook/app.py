@@ -24,17 +24,6 @@ st.markdown("""
     background: transparent !important;
 }
 
-.stApp {
-    background: linear-gradient(-45deg, #0b1220, #111827, #0f172a, #0b1220);
-    background-size: 400% 400%;
-    animation: energyFlow 12s ease infinite;
-}
-
-@keyframes energyFlow {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
             
 .main, .block-container {
     background: transparent !important;
