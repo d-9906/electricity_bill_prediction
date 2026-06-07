@@ -1,1 +1,2 @@
-# electricity_bill_prediction1
+# electricity_bill_prediction
+Project link : https://electricitybillprediction-fgowykmryfmohaiqu3rwmn.streamlit.app/
