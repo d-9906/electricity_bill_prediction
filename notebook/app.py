@@ -319,9 +319,13 @@ h1, h2, h3, p, label {
 """, unsafe_allow_html=True)
 
 
-model = pickle.load(open("model.pkl", "rb"))
-scaler = pickle.load(open("scaler.pkl", "rb"))
-df = pd.read_csv("electricity_bill_dataset.csv")
+from pathlib import Path
+
+BASE_DIR = Path(__file__).parent
+
+model = pickle.load(open(BASE_DIR / "model.pkl", "rb"))
+scaler = pickle.load(open(BASE_DIR / "scaler.pkl", "rb"))
+df = pd.read_csv(BASE_DIR / "electricity_bill_dataset.csv")
 
 city_list = sorted(df["City"].unique())
 company_list = sorted(df["Company"].unique())
