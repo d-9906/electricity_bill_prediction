@@ -2,13 +2,118 @@ import streamlit as st
 import pandas as pd
 import pickle
 
+
 st.set_page_config(
     page_title="Electricity Bill Prediction",
     page_icon="⚡",
     layout="wide"
 )
 
+st.markdown("""
+<style>
 
+/* KEEP YOUR BACKGROUND */
+.stApp {
+    background-image: url("https://thumbs.dreamstime.com/z/home-appliances-background-home-appliances-background-vector-seamless-pattern-home-kitchen-machines-graphic-design-165534348.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* LIGHTER OVERLAY (important for visibility) */
+.stApp::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 25, 60, 0.55);  /* reduced darkness */
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* =========================
+   STRONGER BUBBLES
+========================= */
+.bubbles {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* BIGGER + BRIGHTER + GLOW */
+.bubbles span {
+    position: absolute;
+    bottom: -150px;
+
+    width: 25px;
+    height: 25px;
+
+    /* 🔥 much more transparent */
+    background: radial-gradient(
+        circle,
+        rgba(255,255,255,0.28),
+        rgba(255,255,255,0.05)
+    );
+
+    /* 🔥 remove strong outline look */
+    border: 2px solid rgba(255, 255, 255, 0.15);
+
+    outline: none;
+    border-radius: 50%;
+
+    /* 🔥 softer glow */
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.10);
+
+    animation: rise 18s linear infinite;
+}
+/* VARIATIONS */
+.bubbles span:nth-child(1) { left: 10%; width: 35px; height: 35px; animation-duration: 16s; }
+.bubbles span:nth-child(2) { left: 20%; width: 20px; height: 20px; animation-duration: 22s; }
+.bubbles span:nth-child(3) { left: 35%; width: 28px; height: 28px; animation-duration: 14s; }
+.bubbles span:nth-child(4) { left: 50%; width: 40px; height: 40px; animation-duration: 20s; }
+.bubbles span:nth-child(5) { left: 65%; width: 22px; height: 22px; animation-duration: 17s; }
+.bubbles span:nth-child(6) { left: 80%; width: 30px; height: 30px; animation-duration: 19s; }
+.bubbles span:nth-child(7) { left: 90%; width: 18px; height: 18px; animation-duration: 15s; }
+
+/* SMOOTHER MOVEMENT */
+@keyframes rise {
+    0% {
+        transform: translateY(0) scale(0.8);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 0.9;
+    }
+    100% {
+        transform: translateY(-110vh) scale(1.3);
+        opacity: 0;
+    }
+}
+
+/* KEEP CONTENT ABOVE */
+.block-container {
+    position: relative;
+    z-index: 2;
+}
+
+</style>
+
+<div class="bubbles">
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span>
+</div>
+
+""", unsafe_allow_html=True)
+st.markdown("""<style>.block-container{padding-top:0rem;}</style>""", unsafe_allow_html=True)
 st.markdown("""
 <style>
         
@@ -51,7 +156,7 @@ st.markdown("""
 }
 
    body, .stApp {
-    color: #a9d6e5 !important;
+    color: #ffffff !important;
 }         
 .main, .block-container {
     background: transparent !important;
@@ -66,7 +171,7 @@ h1, h2, h3, h4, h5, h6, p, label, span, div {
     font-size: 50px;
     font-weight: 800;
     margin-bottom: 10px;
-    color:#a9d6e5 !important;
+    color:#ffffff !important;
 }
 
 
@@ -74,7 +179,7 @@ h1, h2, h3, h4, h5, h6, p, label, span, div {
     text-align: center;
     font-size: 20px;
     margin-bottom: 25px;
-    color: #a9d6e5!important;
+    color: #ffffff!important;
 }
 
 
@@ -313,6 +418,14 @@ if st.button("🔮 Predict My Electricity Bill"):
 
     input_df[numeric_cols] = scaler.transform(input_df[numeric_cols])
     prediction = model.predict(input_df)[0]
+    estimated_units = prediction / tariff_rate if tariff_rate > 0 else 0
+
+    if prediction < 2000:
+         confidence = "High Confidence"
+    elif prediction < 5000:
+        confidence = "Very Good Confidence"
+    else:
+        confidence = "Moderate Confidence"
 
     if prediction < 2000:
         category = "🟢 Low Consumption"
@@ -332,18 +445,31 @@ if st.button("🔮 Predict My Electricity Bill"):
         tips.append("Maintain current energy-saving habits.")
 
     st.divider()
-    st.markdown(f"""
+    st.markdown(
+    f"""
     <div class='bill-card'>
-        <h2>📄 ELECTRICITY BILL</h2>
-        <hr>
-        <h3>Predicted Amount</h3>
-        <h1 style='color:green'>₹ {prediction:,.2f}</h1>
-        <h3>Consumption Category</h3>
-        <p style='font-size:22px'>{category}</p>
-    </div>
-    """, unsafe_allow_html=True)
+    <h2>📄 ELECTRICITY BILL</h2>
+    <hr>
 
-    st.progress(min(int(prediction / 100), 100))
+    <h3>Predicted Amount</h3>
+    <h1 style='color:#bfd7ff'>₹ {prediction:,.2f}</h1>
+
+    <h3>Consumption Category</h3>
+    <p style='font-size:22px'>{category}</p>
+
+    <h3>Estimated Units Consumed</h3>
+    <p style='font-size:22px'>{estimated_units:.0f} kWh</p>
+
+    <h3>Prediction Confidence</h3>
+    <p style='font-size:20px'>{confidence}</p>
+    </div>
+    """, 
+    unsafe_allow_html=True)
+
+    bill_percent = min(int((prediction / 8000) * 100), 100)
+
+    st.markdown("### ⚡ Consumption Meter")
+    st.progress(bill_percent)
     st.subheader("💡 Smart Energy Tips")
     for tip in tips:
         st.success(tip)
@@ -361,18 +487,24 @@ with b3:
 st.divider()
     
 st.markdown(
-    "<h3 style='text-align: center; color: inherit;'>🤖 About The Model</h3>",
+    "<h3 style='text-align: center; color: inherit;'> About The Model</h3>",
     unsafe_allow_html=True
 )
 st.info("""
-Machine Learning Model: Random Forest Regressor
+🤖 Model: Random Forest Regressor
 
-Dataset: Household Electricity Consumption Dataset
-https://www.kaggle.com/datasets/suraj520/indian-household-electricity-bill
+📊 Dataset:
+Indian Household Electricity Bill Dataset - https://www.kaggle.com/datasets/suraj520/indian-household-electricity-bill
 
-Purpose:
-Estimate future electricity bills using appliance usage,
-monthly hours, city, company and tariff information.
+⚡ Features Used:
+• Appliance Usage
+• Monthly Hours
+• City
+• Electricity Company
+• Tariff Rate
+
+🎯 Purpose:
+Predict future electricity bills using Machine Learning.
 """)
 
 st.divider()
@@ -387,4 +519,9 @@ st.markdown("""
     <small>© 2026 All Rights Reserved</small>
 </div>
 """, unsafe_allow_html=True)
+
+
+
+
+
 
