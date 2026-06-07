@@ -12,10 +12,6 @@ st.set_page_config(
 st.markdown("""
 <style>
         
-
-
-            
-
 /* MAIN BACKGROUND IMAGE */
 .stApp {
     background-image: url("https://thumbs.dreamstime.com/z/home-appliances-background-home-appliances-background-vector-seamless-pattern-home-kitchen-machines-graphic-design-165534348.jpg");
@@ -23,6 +19,7 @@ st.markdown("""
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
+            
 }
 
 /* DARK OVERLAY (makes text readable) */
@@ -33,10 +30,12 @@ st.markdown("""
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0, 0.75);
+   background: rgba(16,45,82,0.75);
     z-index: 0;
     pointer-events: none;
+        backdrop-filter: blur(2px)
 }
+            
 
 /* BRING CONTENT ABOVE OVERLAY */
 .main, .block-container {
@@ -52,7 +51,7 @@ st.markdown("""
 }
 
    body, .stApp {
-    color: #e5e7eb !important;
+    color: #a9d6e5 !important;
 }         
 .main, .block-container {
     background: transparent !important;
@@ -67,7 +66,7 @@ h1, h2, h3, h4, h5, h6, p, label, span, div {
     font-size: 50px;
     font-weight: 800;
     margin-bottom: 10px;
-    color:#e6d0ad !important;
+    color:#a9d6e5 !important;
 }
 
 
@@ -75,13 +74,13 @@ h1, h2, h3, h4, h5, h6, p, label, span, div {
     text-align: center;
     font-size: 20px;
     margin-bottom: 25px;
-    color: #f1efd8 !important;
+    color: #a9d6e5!important;
 }
 
 
 
 .bill-card {
-    background: rgba(17, 24, 39, 0.75);
+    background: rgba(17, 24, 39, 0.50);
     padding: 30px;
     border-radius: 20px;
     box-shadow: 0px 0px 18px rgba(0,0,0,0.10);
@@ -98,30 +97,32 @@ h1, h2, h3, h4, h5, h6, p, label, span, div {
     color: inherit !important;
 }
 input, textarea {
-    color: #ffffff !important;
-    background: rgba(0,0,0,0.55) !important;
+    color: #153a66 !important;
+    font-weight:bold;
+    background: rgba(255,255,255,0.08) !important;
+    backdrop-filter: blur(10px);
     border: 1px solid rgba(255,255,255,0.2) !important;
 }
-div[data-baseweb="select"] * {
-    color: #ffffff !important;
-    fill: #ffffff !important;
+            [data-baseweb="select"] * {
+    color: #153a66  !important;
+    fill: #153a66 !important;
 }
 
 /* Selected value (main fix) */
 div[data-baseweb="select"] span {
-    color: #ffffff !important;
+    color: #153a66  !important;
 }
 
 /* Input container */
 div[data-baseweb="select"] > div {
-    background: rgba(0,0,0,0.55) !important;
+    background: #ffffff) !important;
     border: 1px solid rgba(255,255,255,0.25) !important;
     border-radius: 10px !important;
 }
 
 /* Arrow icon fix */
 div[data-baseweb="select"] svg {
-    fill: #ffffff !important;
+    fill: #153a66  !important;
 }
 .decor-row {
     text-align: center;
@@ -135,8 +136,8 @@ div[data-baseweb="select"] svg {
    BUTTON STYLING
 ========================= */
 .stButton > button {
-    background: linear-gradient(135deg, #38bdf8, #6366f1) !important;
-    color: white !important;
+    background: linear-gradient(135deg, #bfd7ff, #7fb3ff) !important; !important;
+    color: color: #102d52 !important;   !important;
     border: none !important;
     padding: 10px 20px !important;
     border-radius: 12px !important;
@@ -144,34 +145,39 @@ div[data-baseweb="select"] svg {
     font-size: 16px !important;
     transition: 0.3s ease !important;
 }
+.stButton > button {
+    background: linear-gradient(135deg, #bfd7ff, #8fb8ff) !important;
+    color: #102d52 !important;
+    border: none !important;
+}
 
+.stButton > button * {
+    color: #102d52 !important;
+}
 .stButton > button:hover {
     transform: scale(1.03);
     box-shadow: 0 0 15px rgba(56,189,248,0.5);
 }
 
-/* =========================
-   INFO CARDS (b1, b2, b3 + st.info)
-========================= */
 div[data-testid="stAlert"] {
-    background: rgba(17, 24, 39, 0.75) !important;
-    color: #e5e7eb !important;
-    border-radius: 12px !important;
-    border: 1px solid rgba(255,255,255,0.08) !important;
+    background: rgba(191, 215, 255, 0.18) !important;
+    border: 1px solid rgba(191, 215, 255, 0.35) !important;
     backdrop-filter: blur(10px);
+    border-radius: 12px !important;
 }
 
-/* =========================
-   ABOUT MODEL SECTION CARD
-========================= */
+div[data-testid="stAlert"] * {
+    color: #ffffff !important;
+}
+
+/* ABOUT MODEL SECTION CARD */
 .stInfo {
     background: rgba(17, 24, 39, 0.75) !important;
     color: #e5e7eb !important;
 }
 
-/* =========================
-   HEADERS INSIDE INFO BOXES
-========================= */
+/* 
+HEADERS INSIDE INFO BOXES */
 div[data-testid="stAlert"] p {
     color: #e5e7eb !important;
 }
@@ -185,6 +191,7 @@ div[data-testid="stAlert"] p {
     border-radius: 20px;
     border: 1px solid rgba(255,255,255,0.12);
     color: #f1f5f9 !important;
+    text-align:center;
 }
 
 /* =========================
