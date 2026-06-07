@@ -327,12 +327,21 @@ model = pickle.load(open(BASE_DIR / "model.pkl", "rb"))
 scaler = pickle.load(open(BASE_DIR / "scaler.pkl", "rb"))
 df = pd.read_csv(BASE_DIR / "electricity_bill_dataset.csv")
 
+from sklearn.preprocessing import LabelEncoder
+
+le_city = LabelEncoder()
+le_company = LabelEncoder()
+le_month = LabelEncoder()
+
+le_city.fit(df["City"])
+le_company.fit(df["Company"])
+le_month.fit(df["Month"])
+
 city_list = sorted(df["City"].unique())
 company_list = sorted(df["Company"].unique())
 month_list = sorted(df["Month"].unique())
 
-city_mapping = {city: idx for idx, city in enumerate(city_list)}
-company_mapping = {company: idx for idx, company in enumerate(company_list)}
+
 
 st.markdown("<div style='text-align:center;font-size:20px,color:#f1efd8'>◉ Electricity Bill Prediction System ◉</div>", unsafe_allow_html=True)
 st.markdown("<div class='title'> What Will Be My Next Electricity Bill?</div>", unsafe_allow_html=True)
@@ -379,36 +388,36 @@ if st.button("🔮 Predict My Electricity Bill"):
         motorpump * 4.0
     )
 
-    city_encoded = city_mapping[city]
-    company_encoded = company_mapping[company]
+    city_encoded = le_city.transform([city])[0]
+    company_encoded = le_company.transform([company])[0]
+    month_encoded = le_month.transform([month])[0]
 
     input_df = pd.DataFrame([[
-        city_encoded,
-        company_encoded,
-        fan,
-        refrigerator,
-        ac,
-        television,
-        monitor,
-        motorpump,
-        month,
-        monthly_hours,
-        tariff_rate
-    ]], columns=[
-        "City",
-        "Company",
-        "Fan",
-        "Refrigerator",
-        "AirConditioner",
-        "Television",
-        "Monitor",
-        "MotorPump",
-        "Month",
-        "MonthlyHours",
-        "TariffRate"
-    ])
-
-    numeric_cols = [
+    fan,
+    refrigerator,
+    ac,
+    television,
+    monitor,
+    motorpump,
+    month_encoded,
+    city_encoded,
+    company_encoded,
+    monthly_hours,
+    tariff_rate
+]], columns=[
+    "Fan",
+    "Refrigerator",
+    "AirConditioner",
+    "Television",
+    "Monitor",
+    "MotorPump",
+    "Month",
+    "City",
+    "Company",
+    "MonthlyHours",
+    "TariffRate"
+])
+    num_cols = [
         "Fan",
         "Refrigerator",
         "AirConditioner",
@@ -419,9 +428,10 @@ if st.button("🔮 Predict My Electricity Bill"):
         "MonthlyHours",
         "TariffRate"
     ]
+   
 
-    input_df[numeric_cols] = scaler.transform(input_df[numeric_cols])
-    prediction = model.predict(input_df)[0]
+    input_df[num_cols] = scaler.transform(input_df[num_cols])
+    prediction = model.predict(input_df.values)[0]
     estimated_units = prediction / tariff_rate if tariff_rate > 0 else 0
 
     if prediction < 2000:
