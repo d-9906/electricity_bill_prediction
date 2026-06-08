@@ -432,6 +432,23 @@ if st.button("🔮 Predict My Electricity Bill"):
 
     input_df[num_cols] = scaler.transform(input_df[num_cols])
     prediction = model.predict(input_df.values)[0]
+    baseline_tariff = 5
+    prediction = prediction * (tariff_rate / baseline_tariff)
+    city_factor = {
+        "Ahmedabad": 0.95,
+        "Mumbai": 1.15,
+        "Delhi": 1.10,
+        "Pune": 1.00
+    }
+    prediction = prediction * city_factor.get(city, 1.0)
+
+    company_factor = {
+        "Adani Power Ltd.": 1.05,
+        "Tata Power": 1.10,
+        "Reliance Energy": 1.08
+    }
+    prediction = prediction * company_factor.get(company, 1.0)
+    
     estimated_units = prediction / tariff_rate if tariff_rate > 0 else 0
 
     if prediction < 2000:
